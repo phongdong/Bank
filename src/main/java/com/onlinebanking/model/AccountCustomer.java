@@ -59,5 +59,4 @@ public class AccountCustomer
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
 }
