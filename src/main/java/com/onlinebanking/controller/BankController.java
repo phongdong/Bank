@@ -27,21 +27,21 @@ public class BankController
 		return bankDAO.save(bank);
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<Bank> updateBank(@PathVariable(value="id") Integer bankId, 
+	@PutMapping("/{bankId}")
+	public ResponseEntity<Bank> updateBank(@PathVariable(value="bankId") Integer bankId, 
 			@Valid @RequestBody Bank newBank) {
 		Bank bank = bankDAO.findOne(bankId);
 		if (bank == null) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		bank.setName(newBank.getName());
+		bank.setBankName(newBank.getBankName());
 		bankDAO.save(bank);
 		return ResponseEntity.ok().body(bank);
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Bank> deleteBank(@PathVariable(value="id") Integer bankId) {
+	@DeleteMapping("/{bankId}")
+	public ResponseEntity<Bank> deleteBank(@PathVariable(value="bankId") Integer bankId) {
 		Bank bank = bankDAO.findOne(bankId);
 		if (bank == null) {
 			return ResponseEntity.notFound().build();

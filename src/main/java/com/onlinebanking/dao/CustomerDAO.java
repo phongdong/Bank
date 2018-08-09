@@ -22,8 +22,8 @@ public class CustomerDAO
 		return customerRespository.findAll();
 	}
 	
-	public Customer findOne(Integer custId) {
-		return customerRespository.getOne(custId);
+	public Customer findOne(Integer cust_id) {
+		return customerRespository.getOne(cust_id);
 	}
 	
 	public void delete(Customer cust) {

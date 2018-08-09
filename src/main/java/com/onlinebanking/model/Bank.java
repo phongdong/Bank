@@ -11,31 +11,32 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name="Bank")
+@Table(name="bank")
 @EntityListeners(AuditingEntityListener.class)
 
-public class Bank {
+public class Bank 
+{
 	@Id
-	@Column(name="bankId")
+	@Column(name="bank_id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int bankId;
 	
-	@Column(name="name")
-	String name;
-	
-	public void setBankId(int bankId) {
-		this.bankId = bankId;
-	}
+	@Column(name="bank_name")
+	String bankName;
 
 	public int getBankId() {
 		return bankId;
 	}
 
-	public String getName() {
-		return name;
+	public void setBankId(int bankId) {
+		this.bankId = bankId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 }

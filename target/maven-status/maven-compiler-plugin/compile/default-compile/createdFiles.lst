@@ -1,10 +1,14 @@
+com/onlinebanking/repository/AccountCustomerRepository.class
 com/onlinebanking/dao/CustomerDAO.class
 com/onlinebanking/controller/AccountController.class
+com/onlinebanking/controller/AccountCustomerController.class
 com/onlinebanking/model/Customer.class
 com/onlinebanking/BankApplication.class
 com/onlinebanking/dao/BankDAO.class
 com/onlinebanking/repository/CustomerRepository.class
 com/onlinebanking/repository/BankRepository.class
+com/onlinebanking/model/AccountCustomer.class
+com/onlinebanking/dao/AccountCustomerDAO.class
 com/onlinebanking/dao/AccountDAO.class
 com/onlinebanking/controller/BankController.class
 com/onlinebanking/controller/CustomerController.class

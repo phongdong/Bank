@@ -22,8 +22,8 @@ public class BankDAO
 		return bankRepository.findAll();
 	}
 	
-	public Bank findOne(Integer bankId) {
-		return bankRepository.getOne(bankId);
+	public Bank findOne(Integer bank_id) {
+		return bankRepository.getOne(bank_id);
 	}
 	
 	public void delete(Bank bank) {

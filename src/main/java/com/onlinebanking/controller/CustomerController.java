@@ -19,7 +19,7 @@ import com.onlinebanking.dao.CustomerDAO;
 import com.onlinebanking.model.Customer;
 
 @RestController
-@RequestMapping("/bank")
+@RequestMapping("/bank/{bankId}")
 public class CustomerController 
 {
 	@Autowired
@@ -35,8 +35,8 @@ public class CustomerController
 		return customerDAO.findAll();
 	}
 	
-	@GetMapping(value="/customers/{id}", produces = "application/json")
-	public ResponseEntity<Customer> getCustomerById(@PathVariable(value="id") Integer custId) {
+	@GetMapping(value="/customers/{custId}", produces = "application/json")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable(value="custId") Integer custId) {
 		Customer customer = customerDAO.findOne(custId);
 		
 		if (customer == null) {
@@ -46,8 +46,8 @@ public class CustomerController
 		return ResponseEntity.ok().body(customer);
 	}
 	
-	@PutMapping(value="/customers/{id}", produces = "application/json")
-	public ResponseEntity<Customer> updateCustomer(@PathVariable(value="id") Integer custId,
+	@PutMapping(value="/customers/{custId}", produces = "application/json")
+	public ResponseEntity<Customer> updateCustomer(@PathVariable(value="custId") Integer custId,
 			@Valid @RequestBody Customer newCustomer) {
 		Customer customer = customerDAO.findOne(custId);
 		if (customer == null) {
@@ -61,8 +61,8 @@ public class CustomerController
 		return ResponseEntity.ok().body(updateCustomer);
 	}
 	
-	@DeleteMapping("/customers/{id}")
-	public ResponseEntity<Customer> deleteCustomer(@PathVariable(value="id") Integer custId) {
+	@DeleteMapping("/customers/{custId}")
+	public ResponseEntity<Customer> deleteCustomer(@PathVariable(value="custId") Integer custId) {
 		Customer customer = customerDAO.findOne(custId);
 		if (customer == null) {
 			return ResponseEntity.notFound().build();

@@ -22,8 +22,8 @@ public class AccountDAO
 		return accountRepository.findAll();
 	}
 	
-	public Account findOne(Integer acctId) {
-		return accountRepository.getOne(acctId);
+	public Account findOne(Integer cust_id) {
+		return accountRepository.getOne(cust_id);
 	}
 	
 	public void delete(Account acct) {

@@ -1,7 +1,6 @@
 package com.onlinebanking.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +15,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.onlinebanking.dao.AccountDAO;
+import com.onlinebanking.dao.BankDAO;
 import com.onlinebanking.model.Account;
+import com.onlinebanking.model.Bank;
 
 @RestController
-@RequestMapping("/bank")
+@RequestMapping("/bank/{bankId}")
 public class AccountController 
 {
 	@Autowired
 	AccountDAO accountDAO;
 	
+	@Autowired
+	BankDAO bankDAO;
+	
 	@PostMapping("/accounts")
-	public Account createAccount(@Valid @RequestBody Account acct) {
-		return accountDAO.save(acct);
+	public ResponseEntity<Account> createAccount(@PathVariable(value="bankId") Integer bankId, @Valid @RequestBody Account acct) {
+		Bank bank = bankDAO.findOne(bankId);
+		if (bank == null) {
+			return ResponseEntity.notFound().build();
+		}
+		((Account) acct).setBank(bank);
+		Account account = accountDAO.save(acct);
+		return ResponseEntity.ok().body(account);
 	}
 	
 	@GetMapping("/accounts")
@@ -35,8 +45,8 @@ public class AccountController
 		return accountDAO.findAll();
 	}
 	
-	@GetMapping("/accounts/{id}")
-	public ResponseEntity<Account> getAccountById(@PathVariable(value="id") Integer acctId) {
+	@GetMapping("/accounts/{acctId}")
+	public ResponseEntity<Account> getAccountById(@PathVariable(value="acctId") Integer acctId) {
 		Account account = accountDAO.findOne(acctId);
 		if (account == null) {
 			return ResponseEntity.notFound().build();
@@ -44,23 +54,25 @@ public class AccountController
 		return ResponseEntity.ok().body(account);
 	}
 	
-	@PutMapping(value="/accounts/{id}", produces="application/json")
-	public ResponseEntity<Account> updateAccount(@PathVariable(value="id") Integer acctId, 
+	@PutMapping(value="/accounts/{acctId}", produces="application/json")
+	public ResponseEntity<Account> updateAccount(@PathVariable(value="acctId") Integer acctId, 
 			@Valid @RequestBody Account newAccount) {
 		Account account = accountDAO.findOne(acctId);
 		if (account == null) { 
 			return ResponseEntity.notFound().build();
 		}
 		
-		account.setAmount(newAccount.getAmount());
+		if (account.getAmount() + newAccount.getAmount() < 0) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		account.setAmount(account.getAmount() + newAccount.getAmount());
 		accountDAO.save(account);
 		return ResponseEntity.ok().body(account);
 	}
 	
-	@PutMapping(value="/accounts/{id}")
-	
-	@DeleteMapping(value="/accounts/{id}")
-	public ResponseEntity<Account> deleteAccount(@PathVariable(value="id") Integer acctId) {
+	@DeleteMapping(value="/accounts/{acctId}")
+	public ResponseEntity<Account> deleteAccount(@PathVariable(value="acctId") Integer acctId) {
 		Account account = accountDAO.findOne(acctId);
 		if (account == null) {
 			return ResponseEntity.notFound().build();
