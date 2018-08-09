@@ -1,5 +1,6 @@
 package com.onlinebanking.controller;
 
+import java.awt.datatransfer.Transferable;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -70,6 +71,30 @@ public class AccountController
 		accountDAO.save(account);
 		return ResponseEntity.ok().body(account);
 	}
+	
+	@PutMapping(value="/accounts/{fromAcctId}/{toAcctId}/{amount}", produces="application/json")
+	public ResponseEntity<Account> transfer(@PathVariable(value="fromAcctId") Integer fromAcctId,
+			@PathVariable(value="toAcctId") Integer toAcctId, @PathVariable(value="amount") Integer amountTransfer) {
+		Account fromAcct = accountDAO.findOne(fromAcctId);
+		if (fromAcct == null) {
+			return ResponseEntity.notFound().build();
+		}
+		Account toAccount = accountDAO.findOne(toAcctId);
+		if (toAccount == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		if (fromAcct.getAmount() < amountTransfer) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		fromAcct.setAmount(fromAcct.getAmount() - amountTransfer);
+		toAccount.setAmount(toAccount.getAmount() + amountTransfer);
+		accountDAO.save(fromAcct);
+		accountDAO.save(toAccount);
+		return ResponseEntity.ok().body(toAccount);
+	}
+	
 	
 	@DeleteMapping(value="/accounts/{acctId}")
 	public ResponseEntity<Account> deleteAccount(@PathVariable(value="acctId") Integer acctId) {
